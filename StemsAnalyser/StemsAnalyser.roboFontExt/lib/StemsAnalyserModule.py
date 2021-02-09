@@ -101,8 +101,5 @@ def sheared(point, angle):
 
 def roundbase(x, base):
 	return int(base * round(float(x)/base))
-	
-def compare((k1,v1),(k2,v2)):
-	return v2 - v1
 
 ######

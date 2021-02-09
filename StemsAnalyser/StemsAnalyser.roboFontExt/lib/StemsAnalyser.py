@@ -3,6 +3,7 @@ from mojo.drawingTools import *
 from vanilla import *
 from defconAppKit.windows.baseWindow import BaseWindowController
 from AppKit import *
+from importlib import reload
 
 import math
 import StemsAnalyserModule as module
@@ -180,7 +181,7 @@ class WindowController(BaseWindowController):
 				valuesXDict[StemXValue] += 1
 			except KeyError:
 				valuesXDict[StemXValue] = 1
-		#print 'x',valuesXDict
+		# print('x',valuesXDict)
 		
 		valuesYDict = {}
 		for StemYValue in self.stemsValuesYList:
@@ -188,20 +189,20 @@ class WindowController(BaseWindowController):
 				valuesYDict[StemYValue] += 1
 			except KeyError:
 				valuesYDict[StemYValue] = 1
-		#print 'y',valuesYDict
+		# print('y',valuesYDict)
 		
-		keyValueXList = valuesXDict.items()
-		keyValueXList.sort(module.compare)
+		keyValueXList = list(valuesXDict.items())
+		keyValueXList.sort(key=lambda x: x[1], reverse=True)
 		keyValueXList = keyValueXList[:12]
 
-		keyValueYList = valuesYDict.items()
-		keyValueYList.sort(module.compare)
+		keyValueYList = list(valuesYDict.items())
+		keyValueYList.sort(key=lambda x: x[1], reverse=True)
 		keyValueYList = keyValueYList[:12]
 		
 		
 		for keyValue in keyValueXList:
 			self.stemSnapVList.append(keyValue[0])
-		#print 'stemSnapH', self.stemSnapHList
+		#print('stemSnapH', self.stemSnapHList)
 		
 		stemSnapVText = ''
 		for i in self.stemSnapVList:
@@ -210,7 +211,7 @@ class WindowController(BaseWindowController):
 
 		for keyValue in keyValueYList:
 			self.stemSnapHList.append(keyValue[0])
-		#print 'stemSnapV', self.stemSnapVList
+		#print('stemSnapV', self.stemSnapVList)
 		
 		stemSnapHText = ''
 		for i in self.stemSnapHList:
@@ -342,10 +343,10 @@ def makeStemsList(f, g_hPoints, g, italicAngle):
 		(preRot0x, preRot0y) = module.rotated(stem[0], italicAngle)
 		(preRot1x, preRot1y) = module.rotated(stem[1], italicAngle)
 		def pred0(x):
-			#print preRot0x, x
+			#print(preRot0x, x)
 			return module.approxEqual(preRot0x, x)
 		def pred1(x):
-			#print preRot1x, x
+			#print(preRot1x, x)
 			return module.approxEqual(preRot1x, x)
 		if not module.exists(xList,pred0) or not module.exists(xList,pred1):
 			stemsListX.append(stem)
@@ -365,13 +366,13 @@ else:
 
 g = f['o']
 if not g:
-	print "WARNING: glyph 'o' missing"
+	print("WARNING: glyph 'o' missing")
 o_hPoints = make_hPointsList(g)
 (o_stemsListX, o_stemsListY) = makeStemsList(f, o_hPoints, g, ital)
 
 g = f['O']
 if not g:
-	print "WARNING: glyph 'O' missing"
+	print("WARNING: glyph 'O' missing")
 O_hPoints = make_hPointsList(g)
 (O_stemsListX, O_stemsListY) = makeStemsList(f, O_hPoints, g, ital)
 
@@ -393,8 +394,8 @@ maxStemX = maxX + 10*(maxX/100)
 maxStemY = maxX + 10*(maxX/100)
 
 
-	#print 'minX', minStemX, 'maxX', maxStemX
-	#print 'minY', minStemY, 'maxY', maxStemY		
+	#print('minX', minStemX, 'maxX', maxStemX)
+	#print('minY', minStemY, 'maxY', maxStemY		)
 ################
 
 reload(module)
